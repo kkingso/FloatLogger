@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/log_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="2023-11-15 00:26:20.362 27585-27585 OverScroll...timization com.kkw.floatlogger                  I  start init SmartSlideOverScroller and get the overscroller config" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#40000000"/>
+
+</LinearLayout>
