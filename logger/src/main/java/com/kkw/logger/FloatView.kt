@@ -13,7 +13,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kkw.logger.databinding.ViewFloatBinding
 import java.io.BufferedReader
@@ -68,7 +67,8 @@ class FloatView(private val mContext: Context) {
         layoutParams?.format = PixelFormat.RGBA_8888
         layoutParams?.gravity = Gravity.START or Gravity.TOP
         layoutParams?.flags =
-            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+//        or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         layoutParams?.width = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams?.height = WindowManager.LayoutParams.WRAP_CONTENT
         layoutParams?.x = 900
@@ -80,11 +80,14 @@ class FloatView(private val mContext: Context) {
      * 初始化EditText布局
      */
     private fun initView() {
-        mBinding.logTag.setOnClickListener {
-            showSoftInput()
-        }
-        mBinding.logTag.addTextChangedListener {
-            mBinding.logTag.setText(it?.toString())
+//        mBinding.logTag.setOnClickListener {
+//            showSoftInput()
+//        }
+//        mBinding.logTag.addTextChangedListener {
+//            mBinding.logTag.setText(it?.toString())
+//        }
+        mBinding.logOk.setOnClickListener {
+            initData(mBinding.logTag.text.toString().trim())
         }
     }
 
@@ -103,7 +106,6 @@ class FloatView(private val mContext: Context) {
      * 显示浮窗
      */
     fun show() {
-        initData("FloatService")
         if (Settings.canDrawOverlays(mContext)) {
             mBinding.root.setOnTouchListener(FloatingOnTouchListener())
             windowManager?.addView(mBinding.root, layoutParams)
@@ -131,7 +133,10 @@ class FloatView(private val mContext: Context) {
             var bufferedReader: BufferedReader? = null
             try {
                 val cmd = "logcat -s ${tag}"
+//                val cmd = "logcat | grep ${tag}"
+//                val cmd = "logcat | grep -E \"${tag}\""
 //                val cmd = "logcat com.kkw.floatlogger.*:V"
+//                val cmd = arrayOf("logcat", "-v", "long")
                 val process = Runtime.getRuntime().exec(cmd)
                 bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
 
@@ -140,6 +145,7 @@ class FloatView(private val mContext: Context) {
                     line = bufferedReader.readLine()
                     line?.let {
                         mHandler.sendMessage(Message.obtain(mHandler, 0, it))
+                        Thread.sleep(100)
                     }
                 } while (line != null)
 
